@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Basics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <!-- <script src="https://unpkg.com/vue@next" defer></script> -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Mythos Solitaire: {{cardCount}} drawn cards</h1>
+      <h4>{{message}}</h4>
+      <table>
+        <tr><td><button @click="drawCard" v-if="showNewCardButton">Draw a card</button></td></tr>
+        <tr>
+          <th>Your Highlander</th>
+          <td id="idHighlanderCards">
+            <span v-for="card in highlanderCards">
+              <playing-card
+                :rank="card.rank"
+                :suit="card.suit"
+                :value="card.value"
+                :id="card.id"
+                @card-chosen="cardChosen"
+              ></playing-card>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th>Highlander Assistance</th>
+          <td v-if="allowHighlanderPick" id="idBonusHighlanderCards">
+            <span v-for="card in bonusHighlanderCards">
+              <playing-card
+                :rank="card.rank"
+                :suit="card.suit"
+                :value="card.value"
+                :id="card.id"
+                @card-chosen="cardChosen"
+              ></playing-card>
+            </span>
+          </td>
+          <td v-else id="idBonusHighlanderCards">
+            <span v-for="card in bonusHighlanderCards">
+              <playing-card
+                :rank="card.rank"
+                :suit="card.suit"
+                :value="card.value"
+                :id="card.id"
+              ></playing-card>
+            </span>
+        </tr>
+        <tr>
+          <th>Your hand</th>
+          <td id="idHandCards">
+            <span v-for="card in handCards">
+              <playing-card
+                :rank="card.rank"
+                :suit="card.suit"
+                :value="card.value"
+                :id="card.id"
+                @card-chosen="cardChosen"
+              ></playing-card>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th>Opposing Highlander</th>
+          <td id="idOpposingHighlanderCards">
+            <span v-for="card in enemyHighlanderCards">
+              <playing-card
+                :rank="card.rank"
+                :suit="card.suit"
+                :value="card.value"
+                :id="card.id"
+                @card-chosen="cardChosen"
+              ></playing-card>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
