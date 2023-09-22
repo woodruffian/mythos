@@ -28,11 +28,10 @@ var app = Vue.createApp({
       stepid: 0, //0 = start.  Which step in the game are we?
       cardCount: 0,
       message: "",
-      gameOver:  false,
+      gameOver: false,
       winner: null,
       showNewCardButton: false,
       allowHighlanderPick: false,
-      
     };
   },
   mounted() {
@@ -106,13 +105,13 @@ var app = Vue.createApp({
 
         //just in case the random was actually 1  :-)
         if (randIndex > this.deck.length) randIndex--;
-        console.log('rand index ', randIndex);
+        console.log("rand index ", randIndex);
         const card = this.deck.splice(randIndex, 1)[0];
         console.log(card);
         //console.log(this.drawnCard);
         this.highlanderCards.push(card);
         //console.log(this.drawnCard);
-        this.advanceStep();//check number of cards that need to be drawn and then advance step.  For now assume 1 card.
+        this.advanceStep(); //check number of cards that need to be drawn and then advance step.  For now assume 1 card.
       }
     },
     pickCards(numCards) {
@@ -142,29 +141,30 @@ var app = Vue.createApp({
 
       let playertotal = this.playerCardValue;
       const enemytotal = this.enemyCardValue;
-      if(this.stepid > 20){
-
-      }
-      else{
+      if (this.stepid > 20) {
+      } else {
         playertotal += this.playerHandValue;
-        if (playertotal <= enemytotal){
-          console.log('You lose, sucker!', playertotal, enemytotal, this.playerHandValue);
-          this.gameOver=true;
-          this.winner='Enemy';
+        if (playertotal <= enemytotal) {
+          console.log(
+            "You lose, sucker!",
+            playertotal,
+            enemytotal,
+            this.playerHandValue
+          );
+          this.gameOver = true;
+          this.winner = "Enemy";
         }
       }
-
-
     },
     //advanceStep is done at the beginning of a step.
     //cardChosen is done in the middle/end of the step.
     advanceStep() {
       this.stepid++;
-      console.log ('advancing to step ', this.stepid);
+      console.log("advancing to step ", this.stepid);
       switch (this.stepid) {
         case 1:
-          this.allowHighlanderPick=false;
-          this.showNewCardButton=false;
+          this.allowHighlanderPick = false;
+          this.showNewCardButton = false;
 
           let cards = this.pickCards(2);
           for (const card of cards) {
@@ -175,42 +175,57 @@ var app = Vue.createApp({
           break;
         case 2: //add an item into the opposing highlander. If needed augment your highlander;
         case 4:
-        this.allowHighlanderPick=false;
-        this.showNewCardButton=false;
-        const numtodraw = this.highlanderCards.length - this.enemyHighlanderCards.length;
-        console.log ('drawing num cards: ', numtodraw);
-        const dcards = this.pickCards(numtodraw);
+        case 6:
+        case 8:
+        case 10:
+          this.allowHighlanderPick = false;
+          this.showNewCardButton = false;
+          const numtodraw =
+            this.highlanderCards.length - this.enemyHighlanderCards.length;
+          console.log("drawing num cards: ", numtodraw);
+          const dcards = this.pickCards(numtodraw);
           //card.index = 0;
-          for(const card of dcards){
+          for (const card of dcards) {
             this.enemyHighlanderCards.push(card);
-
           }
 
           const playervalue = this.playerCardValue;
           const enemyvalue = this.enemyCardValue;
           if (playervalue <= enemyvalue) {
             this.checkForWinner();
-            if (this.gameOver){
+            if (this.gameOver) {
               this.setMessage("You lose!");
-
+            } else {
+              this.setMessage(
+                "Pick card from your hand to assist your Highlander."
+              );
             }
-            else{
-              this.setMessage("Pick card from your hand to assist your Highlander."); 
-            }
-
           } else {
             this.advanceStep();
-
           }
           //if ()
 
           break;
         case 3: // user has picked a new card or opposing highlander card.
-          this.allowHighlanderPick=true;
-          this.showNewCardButton=true;
+        case 5:
+        case 7:
+        case 9:
+          this.allowHighlanderPick = true;
+          this.showNewCardButton = true;
           this.bonusHighlanderCards.length = 0;
+          if (this.highlanderCards.length == 5) {
+            this.setMessage(
+              "You won!  There can be only one, and that one is YOU."
+            );
+          } else {
+            this.setMessage(
+              "You won the round.  Pick a new card or opposing highlander card to add to your highlander."
+            );
+          }
+          break;
+        case 11:
           this.setMessage(
-            "You won the round.  Pick a new card or opposing highlander card to add to your highlander."
+            "You won!  There can be only one, and that one is YOU."
           );
 
           break;
@@ -224,13 +239,13 @@ var app = Vue.createApp({
       let chosenCard;
       let idx;
       let transferCard;
-      console.log ('chosen card id = ', id);
+      console.log("chosen card id = ", id);
       switch (this.stepid) {
         case 1: //choosing from highlander to hand
           chosenCard = this.highlanderCards.find((x) => x.id == id);
-          idx = this.highlanderCards.findIndex(x=> x.id == id);
+          idx = this.highlanderCards.findIndex((x) => x.id == id);
           //idx = chosenCard.index;
-          console.log('chosen index ', idx);
+          console.log("chosen index ", idx);
           if (idx === undefined) break;
           //console.log('Emitted ', chosenCard.suit, chosenCard.rank, chosenCard.index);
           transferCard = this.highlanderCards.splice(idx, 1)[0];
@@ -238,34 +253,40 @@ var app = Vue.createApp({
           this.advanceStep();
           break;
         case 2: // having to move from hand to bonus highlander extra
+        case 4:
+        case 6:
+        case 8:
           chosenCard = this.handCards.find((x) => x.id == id);
           if (!chosenCard) {
-            console.log('invalid card picked');
+            console.log("invalid card picked");
             break;
           }
-          idx = this.handCards.findIndex(x=> x.id == id);
-          console.log('chosen card ', chosenCard);
-          if (idx < 0 ) break;
+          idx = this.handCards.findIndex((x) => x.id == id);
+          console.log("chosen card ", chosenCard);
+          if (idx < 0) break;
           //idx = chosenCard.index;
           //console.log('Emitted ', chosenCard.suit, chosenCard.rank, chosenCard.index);
           transferCard = this.handCards.splice(idx, 1)[0];
-          console.log('transfer card id', transferCard.id);
+          console.log("transfer card id", transferCard.id);
           this.bonusHighlanderCards.push(transferCard);
-          console.log('bonus card length ', this.bonusHighlanderCards.length);
-          this.advanceStep();   //in the first round, if they move a card, it is the only card, they have guaranteed a win.
+          console.log("bonus card length ", this.bonusHighlanderCards.length);
+          this.advanceStep(); //in the first round, if they move a card, it is the only card, they have guaranteed a win.
           break;
         case 3: //chosen from the highlander hand
-        chosenCard = this.enemyHighlanderCards.find( (x) => x.id == id);
-        if (!chosenCard) {
-          console.log('invalid card picked');
+        case 5:
+        case 7:
+        case 9:
+          chosenCard = this.enemyHighlanderCards.find((x) => x.id == id);
+          if (!chosenCard) {
+            console.log("invalid card picked");
+            break;
+          }
+          idx = this.enemyHighlanderCards.findIndex((x) => x.id == id);
+          console.log("chosen card ", chosenCard);
+          this.enemyHighlanderCards.splice(idx, 1);
+          this.highlanderCards.push(chosenCard);
+          this.advanceStep(); //move to round 4 where the values are compared.
           break;
-        }
-        idx = this.enemyHighlanderCards.findIndex(x=> x.id == id);
-        console.log('chosen card ', chosenCard);
-        this.enemyHighlanderCards.splice(idx, 1);
-        this.highlanderCards.push(chosenCard);
-        this.advanceStep();   //move to round 4 where the values are compared.
-        break;
       }
     },
   },

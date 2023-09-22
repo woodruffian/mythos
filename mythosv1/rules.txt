@@ -1,0 +1,29 @@
+“Mythos solitaire”
+Would you post the code base where I can access it?
+What a great idea!
+
+Rules
+Setup
+Shuffle a deck with no face cards
+Aces are low and worth 1 (spots on cards)
+Draw two cards and look at them
+Put one down on the table to be your Highlander
+A round
+Turn over the top card of the deck, this is the opposing Highlander
+If your Highlander has a higher value than your opponent you win the round.
+If your Highlander has the same or lower value than your opponent you can play cards to increase your Highlander’s value. These are discarded after the round.
+If after playing cards your Highlander value is still tied or lower you lose the game
+Winning the round
+You can either choose the Highlander you defeated or the top card from the deck (without looking)
+You then decide if it goes into your hand or onto your Highlander. If it goes into your hand the next round win has to go to your Highlander and not your hand
+Placing a card onto your Highlander
+Your Highlander has 4 locations to increase its value, top, left, right, bottom. Locations have no special rules, they are just places to increase your Highlander.
+Next round(s)
+Turn over the top card of the deck, this is the opposing Highlander
+Turn over the top card of the deck to increase the opposing Highlander to match the number of cards on your Highlander. Ex: If your Highlander has a total of 3 cards (center, top, left) draw a total of 3 cards for the opposing Highlander. The first card goes in the center.
+Count up all the values on your Highlander and compare it to all the values on the opposing Highlander.
+If your Highlander has a higher value than your opponent you win the round.
+If your Highlander has the same or lower value than your opponent you can play cards to increase your Highlander’s value. These are discarded after the round.
+If after playing cards your Highlander value is still tied or lower you lose the game
+Winning the game
+Once you have a total of 5 cards for your Highlander (center, top, left, right, bottom) you face one more Highlander. Follow the same rules as all the previous rounds. If you win this round you have won the game.
